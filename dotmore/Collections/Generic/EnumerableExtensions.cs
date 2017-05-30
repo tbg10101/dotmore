@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace mattmc3.dotmore.Collections.Generic {
 
@@ -108,7 +109,12 @@ namespace mattmc3.dotmore.Collections.Generic {
 				let s = convertToString(a)
 				select s.Contains(delimiter) || s.Contains("\r") || s.Contains("\n") || s.Contains(quote) ? String.Format("{0}{1}{0}", quote, s) : s
 			);
-			return String.Join(",", data);
+			
+			StringJoiner sj = new StringJoiner(",");
+			
+			data.ForEach(e => sj.Add(e));
+
+			return sj.ToString();
 		}
 
 		private static OrderedDictionary<TKey, TElement> GetOrderedDictionaryImpl<TSource, TKey, TElement>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {

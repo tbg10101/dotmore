@@ -72,7 +72,7 @@ namespace mattmc3.dotmore.Extensions {
 		/// <param name="args">An object array that contains zero or more objects to format</param>
 		public static string FormatWith(this string s, params object[] args) {
 			if (s == null) return null;
-			return String.Format(s, args);
+			return string.Format(s, args);
 		}
 
 		/// <summary>
@@ -82,7 +82,7 @@ namespace mattmc3.dotmore.Extensions {
 		/// <param name="args">An object array that contains zero or more objects to format</param>
 		public static string FormatWith(this string s, IFormatProvider provider, params object[] args) {
 			if (s == null) return null;
-			return String.Format(provider, s, args);
+			return string.Format(provider, s, args);
 		}
 
 		/// <summary>
@@ -117,8 +117,8 @@ namespace mattmc3.dotmore.Extensions {
 			return new string(array);
 		}
 
-		public static bool IsNullOrWhitespace(this string input) {
-			return String.IsNullOrWhiteSpace(input);
+		public static bool IsNullOrWhitespace(this string value) {
+			return string.IsNullOrEmpty(value) || value.Trim().Length == 0;
 		}
 
 		public static string[] SplitLines(this string that) {
@@ -313,7 +313,7 @@ namespace mattmc3.dotmore.Extensions {
 		public static string TrimEnd(this string s) {
 			if (s == null) return null;
 			var buf = new StringBuilder(s);
-			while (buf.Length > 0 && Char.IsWhiteSpace(buf[buf.Length - 1])) {
+			while (buf.Length > 0 && char.IsWhiteSpace(buf[buf.Length - 1])) {
 				buf.Remove(buf.Length - 1, 1);
 			}
 			return buf.ToString();
@@ -322,7 +322,7 @@ namespace mattmc3.dotmore.Extensions {
 		public static string TrimStart(this string s) {
 			if (s == null) return null;
 			var buf = new StringBuilder(s);
-			while (buf.Length > 0 && Char.IsWhiteSpace(buf[0])) {
+			while (buf.Length > 0 && char.IsWhiteSpace(buf[0])) {
 				buf.Remove(0, 1);
 			}
 			return buf.ToString();
@@ -330,8 +330,8 @@ namespace mattmc3.dotmore.Extensions {
 
 		public static bool IsWildcardMatch(this string s, string wildcardPattern) {
 			// make this work like VB.NET's 'Like' keyword
-			if (String.IsNullOrEmpty(wildcardPattern)) {
-				return String.IsNullOrEmpty(s);
+			if (string.IsNullOrEmpty(wildcardPattern)) {
+				return string.IsNullOrEmpty(s);
 			}
 			var rePattern = RegexHelper.ConvertWildcardPatternToRegex(wildcardPattern);
 			return Regex.IsMatch(s, rePattern, RegexHelper.XmsiOpts);
@@ -358,9 +358,7 @@ namespace mattmc3.dotmore.Extensions {
 			// Creates a TextInfo based on the "en-US" culture.
 			TextInfo ti = new CultureInfo("en-US", false).TextInfo;
 			string result = ti.ToTitleCase(value.ToLower());
-			MatchEvaluator matchEval = delegate(Match m) {
-				return m.Groups[1].Value + m.Groups[2].Value.ToLower();
-			};
+			MatchEvaluator matchEval = m => m.Groups[1].Value + m.Groups[2].Value.ToLower();
 			result = Regex.Replace(result, "([0-9])([A-Z])", matchEval);
 			return result;
 		}
