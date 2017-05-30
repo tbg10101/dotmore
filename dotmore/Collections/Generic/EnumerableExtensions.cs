@@ -110,7 +110,7 @@ namespace mattmc3.dotmore.Collections.Generic {
 				select s.Contains(delimiter) || s.Contains("\r") || s.Contains("\n") || s.Contains(quote) ? String.Format("{0}{1}{0}", quote, s) : s
 			);
 			
-			StringJoiner sj = new StringJoiner(",");
+			StringJoiner sj = new StringJoiner(delimiter);
 			
 			data.ForEach(e => sj.Add(e));
 
